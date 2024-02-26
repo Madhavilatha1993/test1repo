@@ -1,7 +1,6 @@
 version: 0.2
 phases:
   install:
-    
     commands:
   pre_build:
     commands:
@@ -11,4 +10,4 @@ phases:
       
   post_build:
     commands:
-      - aws s3 sync  s3://bucket-test12376
+      - aws s3 sync . s3://bucket-test12376
