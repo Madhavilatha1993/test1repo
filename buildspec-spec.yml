@@ -1,0 +1,24 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - docker -v
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 336231350867.dkr.ecr.us-east-1.amazonaws.com/demo-repo
+      - envsubst < ecs/task-definition.json > ecs/task-definition1.json
+      - cat Dockerfile
+      - mkdir temp
+      - cp ./* temp/
+      - ls temp
+       
+  build:
+    commands:
+      - docker build -t demo-repo:latest .
+  post_build:
+    commands:
+      - docker tag demo-repo:latest 336231350867.dkr.ecr.us-east-1.amazonaws.com/demo-repo:latest
+      - echo demo-repo
+      - docker push 336231350867.dkr.ecr.us-east-1.amazonaws.com/demo-repo:latest
+      - aws ecs register-task-definition --family task-demo --region us-east-1 --cli-input-json file:///$CODEBUILD_SRC_DIR/ecs/task-definition1.json
+      - TASK_REVISION=$(aws ecs describe-task-definition --task-definition task-demo --region us-east-1)
+      - aws ecs update-service --cluster demo-cluster --service service-demo --region us-east-1 --task-definition task-demo
