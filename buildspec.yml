@@ -11,6 +11,6 @@ phases:
   post_build:
     commands:
       - aws s3 sync .  s3://bucket-test12376
-      - ls
+      
       
     
