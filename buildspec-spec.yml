@@ -9,7 +9,7 @@ phases:
       - cat Dockerfile
       - mkdir ~/temp
       - cp -r ./* ~/temp/
-      - ls temp
+      - ls ~/temp
        
   build:
     commands:
