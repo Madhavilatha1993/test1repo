@@ -8,7 +8,7 @@ phases:
       - envsubst < ecs/task-definition.json > ecs/task-definition1.json
       - cat Dockerfile
       - mkdir temp
-      - cp *.temp/
+      - cp *. temp/
       - ls temp
        
   build:
